@@ -1,4 +1,4 @@
-package com.vitalsoftware.macros
+package com.github.vitalsoftware.macros
 
 import org.specs2.mutable.Specification
 import play.api.libs.json._

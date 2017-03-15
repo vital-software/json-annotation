@@ -1,4 +1,4 @@
-organization := "com.vitalsoftware"
+organization := "com.github.vitalsoftware"
 
 name := "json-annotation"
 

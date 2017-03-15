@@ -6,7 +6,7 @@ Project forked from Martin Raison's [Kifi macros](https://github.com/kifi/json-a
 Just add ```@json``` in front of your case class definition:
 
 ```scala
-import com.vitalsoftware.macros.json
+import com.github.vitalsoftware.macros._
 
 @json case class Person(name: String, age: Int)
 ```
@@ -34,7 +34,7 @@ If you're using Play with SBT, you should add both the package and the "Macros P
 
 ```scala
 
-libraryDependencies += "com.vitalsoftware" %% "json-annotation" % "0.3"
+libraryDependencies += "com.github.vitalsoftware" %% "json-annotation" % "0.3"
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 ```
 
