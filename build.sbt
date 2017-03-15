@@ -4,9 +4,9 @@ name := "json-annotation"
 
 version := "0.2"
 
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq("2.10.2", "2.10.3", "2.10.4", "2.11.0", "2.11.1")
+crossScalaVersions := Seq("2.10.2", "2.10.3", "2.10.4", "2.11.0", "2.11.1", "2.11.8")
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),
@@ -21,7 +21,7 @@ libraryDependencies ++= (
 )
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-json" % "2.3.1" % Test,
+  "com.typesafe.play" %% "play-json" % "2.6.0-M3" % Test,
   "org.specs2" %% "specs2" % "2.3.13" % Test
 )
 
@@ -29,7 +29,7 @@ unmanagedSourceDirectories in Compile <+= (sourceDirectory in Compile, scalaBina
   (sourceDir, version) => sourceDir / (if (version.startsWith("2.10")) "scala_2.10" else "scala_2.11")
 }
 
-addCompilerPlugin("org.scalamacros" % "paradise" % "2.0.1" cross CrossVersion.full)
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 
 scalacOptions in ThisBuild ++= Seq("-unchecked", "-deprecation")
 
@@ -48,7 +48,7 @@ publishArtifact in Test := false
 pomIncludeRepository := { _ => false }
 
 pomExtra := (
-  <url>https://github.com/kifi/json-annotation</url>
+  <url>https://github.com/vital-software/json-annotation</url>
   <licenses>
     <license>
       <name>MIT</name>
@@ -57,13 +57,18 @@ pomExtra := (
     </license>
   </licenses>
   <scm>
-    <url>git@github.com:kifi/json-annotation.git</url>
-    <connection>scm:git:git@github.com:kifi/json-annotation.git</connection>
+    <url>git@github.com:vital-software/json-annotation.git</url>
+    <connection>scm:git:git@github.com:vital-software/json-annotation.git</connection>
   </scm>
   <developers>
     <developer>
       <id>martinraison</id>
       <name>Martin Raison</name>
       <url>https://github.com/martinraison</url>
+    </developer>
+    <developer>
+      <id>apatzer</id>
+      <name>Aaron Patzer</name>
+      <url>https://github.com/apatzer</url>
     </developer>
   </developers>)

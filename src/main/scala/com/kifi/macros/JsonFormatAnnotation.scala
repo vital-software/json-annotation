@@ -6,42 +6,36 @@ import scala.annotation.StaticAnnotation
 
 import CrossVersionDefs._
 
+/*
+ * Derived from https://github.com/kifi/json-annotation
+ *  - Removed distinction between 'json' and 'jsonstrict'
+ *  - Added 'jsonDefaults' to use Play-Json 2.6+ format with default values on non-Option case class values
+ */
+
 object jsonMacroInstance extends jsonMacro(false)
-object jsonStrictMacroInstance extends jsonMacro(true)
+object jsonDefaultsMacroInstance extends jsonMacro(true)
 
 /**
- * "@json" macro annotation for case classes
- *
- * This macro annotation automatically creates a JSON serializer for the annotated case class.
- * The companion object will be automatically created if it does not already exist.
- *
- * If the case class has more than one field, the default Play formatter is used.
- * If the case class has only one field, the field is directly serialized. For example, if A
- * is defined as:
- *
- *     case class A(value: Int)
- *
- * then A(4) will be serialized as '4' instead of '{"value": 4}'.
- */
+  * "@json" macro annotation for case classes
+  *
+  * This macro annotation automatically creates a JSON serializer for the annotated case class.
+  * The companion object will be automatically created if it does not already exist.
+  */
 class json extends StaticAnnotation {
   def macroTransform(annottees: Any*): Any = macro jsonMacroInstance.impl
 }
 
 /**
- * "@jsonstrict" macro annotation for case classes
- *
- * Same as "@json" annotation, except that it always uses the default Play formatter.
- * For example, if A is defined as:
- *
- *     case class A(value: Int)
- *
- * then A(4) will be serialized as '{"value": 4}'.
- */
-class jsonstrict extends StaticAnnotation {
-  def macroTransform(annottees: Any*): Any = macro jsonStrictMacroInstance.impl
+  * "@jsonDefaults" macro annotation for case classes
+  *
+  * Same as "@json" annotation, except that it uses Json.using[Json.WithDefaultValues] to allow default values
+  * to be used for non-optional fields if they are not present during Reads[T].
+  */
+class jsonDefaults extends StaticAnnotation {
+  def macroTransform(annottees: Any*): Any = macro jsonDefaultsMacroInstance.impl
 }
 
-class jsonMacro(isStrict: Boolean) {
+class jsonMacro(useDefaults: Boolean) {
   def impl(c: CrossVersionContext)(annottees: c.Expr[Any]*): c.Expr[Any] = {
     import c.universe._
 
@@ -57,22 +51,12 @@ class jsonMacro(isStrict: Boolean) {
     def jsonFormatter(className: TypeName, fields: List[ValDef]) = {
       fields.length match {
         case 0 => c.abort(c.enclosingPosition, "Cannot create json formatter for case class with no fields")
-        case 1 if !isStrict => {
-          // use the serializer for the field
-          q"""
-            implicit val jsonAnnotationFormat = {
-              import play.api.libs.json._
-              Format(
-                __.read[${fields.head.tpt}].map(s => ${className.toTermName}(s)),
-                new Writes[$className] { def writes(o: $className) = Json.toJson(o.${fields.head.name}) }
-              )
-            }
-          """
-        }
-        case _ => {
-          // use Play's macro
-          q"implicit val jsonAnnotationFormat = play.api.libs.json.Json.format[$className]"
-        }
+        case _ =>
+          if (useDefaults) {
+            q"implicit val jsonAnnotationFormat = play.api.libs.json.Json.using[play.api.libs.json.Json.WithDefaultValues].format[$className]"
+          } else {
+            q"implicit val jsonAnnotationFormat = play.api.libs.json.Json.format[$className]"
+          }
       }
     }
 
