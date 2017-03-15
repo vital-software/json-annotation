@@ -1,4 +1,4 @@
-package com.kifi.macros
+package com.vitalsoftware.macros
 
 import scala.reflect.macros._
 import scala.language.experimental.macros
