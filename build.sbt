@@ -47,6 +47,8 @@ publishArtifact in Test := false
 
 pomIncludeRepository := { _ => false }
 
+sonatypeProfileName := "com.github.vitalsoftware"
+
 pomExtra := (
   <url>https://github.com/vital-software/json-annotation</url>
   <licenses>
