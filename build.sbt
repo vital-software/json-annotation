@@ -1,4 +1,4 @@
-organization := "com.github.vitalsoftware"
+organization := "com.github.vital-software"
 
 name := "json-annotation"
 
@@ -47,7 +47,7 @@ publishArtifact in Test := false
 
 pomIncludeRepository := { _ => false }
 
-sonatypeProfileName := "com.github.vitalsoftware"
+sonatypeProfileName := "com.github.vital-software"
 
 pomExtra := (
   <url>https://github.com/vital-software/json-annotation</url>

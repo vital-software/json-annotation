@@ -34,7 +34,7 @@ If you're using Play with SBT, you should add both the package and the "Macros P
 
 ```scala
 
-libraryDependencies += "com.github.vitalsoftware" %% "json-annotation" % "0.3"
+libraryDependencies += "com.github.vital-software" %% "json-annotation" % "0.3"
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 ```
 
