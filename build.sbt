@@ -2,7 +2,7 @@ organization := "com.github.vital-software"
 
 name := "json-annotation"
 
-version := "0.3"
+version := "0.3.1"
 
 scalaVersion := "2.11.8"
 
@@ -21,7 +21,7 @@ libraryDependencies ++= (
 )
 
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-json" % "2.6.0-M3" % Test,
+  "com.typesafe.play" %% "play-json" % "2.6.0" % Test,
   "org.specs2" %% "specs2" % "2.3.13" % Test
 )
 
