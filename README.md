@@ -34,7 +34,7 @@ If you're using Play with SBT, you should add both the package and the "Macros P
 
 ```scala
 
-libraryDependencies += "com.github.vital-software" %% "json-annotation" % "0.3"
+libraryDependencies += "com.github.vital-software" %% "json-annotation" % "0.3.2"
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 ```
 
@@ -43,7 +43,7 @@ If you're not using Play, you will also need to add ```play-json``` to your depe
 ```scala
 
 resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
-libraryDependencies += "com.typesafe.play" %% "play-json" % "2.6.0-M3"
+libraryDependencies += "com.typesafe.play" %% "play-json" % "2.6.7"
 ```
 
 This library was tested with both Scala 2.10 and 2.11.
