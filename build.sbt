@@ -2,11 +2,12 @@ organization := "com.github.vital-software"
 
 name := "json-annotation"
 
-version := "0.3.2"
+version := "0.4.0"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.11.11"
 
-crossScalaVersions := Seq("2.10.2", "2.10.3", "2.10.4", "2.11.0", "2.11.1", "2.11.8", "2.11.11", "2.12.2")
+// Largely dependent on support for https://github.com/scalamacros/paradise
+crossScalaVersions := Seq("2.11.8", "2.11.9", "2.11.10", "2.11.11", "2.12.0", "2.12.1", "2.12.2")
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),
@@ -15,18 +16,13 @@ resolvers ++= Seq(
 
 libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-reflect" % _)
 
-libraryDependencies ++= (
-  if (scalaVersion.value.startsWith("2.10")) List("org.scalamacros" %% "quasiquotes" % "2.0.1")
-  else Nil
-)
-
 libraryDependencies ++= Seq(
-  "com.typesafe.play" %% "play-json" % "2.6.7" % Test,
-  "org.specs2" %% "specs2" % "3.3.1" % Test
+  "com.typesafe.play" %% "play-json" % "2.6.8" % Test,
+  "org.specs2" %% "specs2-core" % "3.9.5" % Test
 )
 
 unmanagedSourceDirectories in Compile <+= (sourceDirectory in Compile, scalaBinaryVersion){
-  (sourceDir, version) => sourceDir / (if (version.startsWith("2.10")) "scala_2.10" else "scala_2.11")
+  (sourceDir, version) => sourceDir / (if (version.startsWith("2.11")) "scala_2.11" else "scala_2.12")
 }
 
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
