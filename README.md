@@ -34,7 +34,7 @@ Json.fromJson("{\"name\": \"Victor Hugo\"}")
 If you're using Play with SBT, you should add both the package and the "Macros Paradise" compiler plugin:
 
 ```scala
-libraryDependencies += "com.github.vital-software" %% "json-annotation" % "0.3.2"
+libraryDependencies += "com.github.vital-software" %% "json-annotation" % "0.4.3"
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 ```
 
