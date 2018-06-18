@@ -1,6 +1,8 @@
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 
+import sbtrelease.ReleasePlugin.autoImport.ReleaseTransformations._
+
 import scala.io.{ Codec, Source }
 import scala.sys.process.ProcessLogger
 
@@ -18,14 +20,13 @@ resolvers ++= Seq(
   "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 )
 
-libraryDependencies <+= (scalaVersion)("org.scala-lang" % "scala-reflect" % _)
-
 libraryDependencies ++= Seq(
+  "org.scala-lang" % "scala-reflect" % scalaVersion.value,
   "com.typesafe.play" %% "play-json" % "2.6.8" % Test,
   "org.specs2" %% "specs2-core" % "3.9.5" % Test
 )
 
-unmanagedSourceDirectories in Compile <+= (sourceDirectory in Compile, scalaBinaryVersion){
+unmanagedSourceDirectories in Compile += (sourceDirectory in Compile, scalaBinaryVersion){
   (sourceDir, version) => sourceDir / (if (version.startsWith("2.11")) "scala_2.11" else "scala_2.12")
 }
 
