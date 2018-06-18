@@ -26,10 +26,6 @@ libraryDependencies ++= Seq(
   "org.specs2" %% "specs2-core" % "3.9.5" % Test
 )
 
-unmanagedSourceDirectories in Compile += (sourceDirectory in Compile, scalaBinaryVersion){
-  (sourceDir, version) => sourceDir / (if (version.startsWith("2.11")) "scala_2.11" else "scala_2.12")
-}
-
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 
 scalacOptions in ThisBuild ++= Seq("-unchecked", "-deprecation")
