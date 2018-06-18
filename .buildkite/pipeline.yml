@@ -1,0 +1,21 @@
+steps:
+  - label: ":docker: :sbt: Run tests"
+    command:
+      - docker build --tag json-annotation:${BUILDKITE_COMMIT} -f .buildkite/Dockerfile .
+      - docker run json-annotation:${BUILDKITE_COMMIT} sbt test
+
+  - wait
+
+  - block:    ":rocket: Release"
+    prompt:   Create a release, and push it to Sonatype and Github?
+    branches: "master"
+
+  - label: ":maven: :sbt: Create release"
+    branches: "master"
+    command:
+      - git checkout -B ${BUILDKITE_BRANCH}
+      - git branch -u origin/${BUILDKITE_BRANCH}
+      - git config branch.${BUILDKITE_BRANCH}.remote origin
+      - git config branch.${BUILDKITE_BRANCH}.merge refs/heads/${BUILDKITE_BRANCH}
+      - git clean -df
+      - sbt -batch "release with-defaults skip-tests"
