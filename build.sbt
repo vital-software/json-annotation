@@ -9,6 +9,7 @@ crossScalaVersions := Seq("2.11.12", "2.12.6")
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),
+  Resolver.sonatypeRepo("snapshots"),
   "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 )
 
@@ -68,3 +69,29 @@ pomExtra := (
       <url>https://github.com/apatzer</url>
     </developer>
   </developers>)
+
+// PGP settings
+pgpPassphrase := Some(Array())
+usePgpKeyHex("1bfe664d074b29f8")
+
+// Release settings
+releaseTagName              := s"${if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value}" // Remove v prefix
+releaseTagComment           := s"Releasing ${(version in ThisBuild).value}\n\n[skip ci]"
+releaseCommitMessage        := s"Setting version to ${(version in ThisBuild).value}\n\n[skip ci]"
+
+releaseProcess := Seq[ReleaseStep](
+  checkSnapshotDependencies,
+  inquireVersions,
+  runClean,
+  setReleaseVersion,
+  updateReleaseFiles,
+  commitReleaseVersion,
+  tagRelease,
+  releaseStepCommandAndRemaining("+publishSigned"),
+  setNextVersion,
+  commitNextVersion,
+  releaseStepCommand("sonatypeReleaseAll"),
+  pushChanges
+)
+
+releasePublishArtifactsAction := PgpKeys.publishSigned.value
