@@ -2,7 +2,8 @@ The __@json__ scala macro annotation is the quickest way to add a JSON format to
 
 Project forked from Martin Raison's [Kifi macros](https://github.com/kifi/json-annotation)
 
-#How it works
+## How it works
+
 Just add ```@json``` in front of your case class definition:
 
 ```scala
@@ -28,12 +29,11 @@ Json.fromJson("{\"name\": \"Victor Hugo\"}")
 > Person("Victor Hugo", 7)
 ```
 
-#Installation
+## Installation
 
 If you're using Play with SBT, you should add both the package and the "Macros Paradise" compiler plugin:
 
 ```scala
-
 libraryDependencies += "com.github.vital-software" %% "json-annotation" % "0.3.2"
 addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
 ```
@@ -41,9 +41,8 @@ addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.fu
 If you're not using Play, you will also need to add ```play-json``` to your dependencies:
 
 ```scala
-
 resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
 libraryDependencies += "com.typesafe.play" %% "play-json" % "2.6.7"
 ```
 
-This library was tested with both Scala 2.10 and 2.11.
+This library was tested with both Scala 2.11 and 2.12.
