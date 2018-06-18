@@ -2,9 +2,7 @@ organization := "com.github.vital-software"
 
 name := "json-annotation"
 
-version := "0.4.0"
-
-scalaVersion := "2.11.11"
+scalaVersion := "2.11.12"
 
 // Largely dependent on support for https://github.com/scalamacros/paradise
 crossScalaVersions := Seq("2.11.8", "2.11.9", "2.11.10", "2.11.11", "2.12.0", "2.12.1", "2.12.2")
