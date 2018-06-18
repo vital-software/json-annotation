@@ -1,11 +1,11 @@
+
 organization := "com.github.vital-software"
 
 name := "json-annotation"
 
 scalaVersion := "2.11.12"
 
-// Largely dependent on support for https://github.com/scalamacros/paradise
-crossScalaVersions := Seq("2.11.8", "2.11.9", "2.11.10", "2.11.11", "2.12.0", "2.12.1", "2.12.2")
+crossScalaVersions := Seq("2.11.12", "2.12.6")
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),
