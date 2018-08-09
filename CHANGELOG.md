@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.5.0] - 2018-08-09
+
 ### Breaking changes
 
 - Any case class property with default values or Optional values now
