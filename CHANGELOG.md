@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+### Breaking changes
+
+- Any case class property with default values or Optional values now
+fallback to defaults if parsing fails.
+
 ## [0.4.5] - 2018-06-18
 
 ### Changed
