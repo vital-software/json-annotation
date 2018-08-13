@@ -5,7 +5,6 @@ import play.api.libs.json._
 
 @json case class Person(name: String, age: Int, gender: Option[String])
 @jsonDefaults case class Person2(name: String, age: Int = 7, gender: Option[String] = None)
-@jsonDefaults case class Test(f1: Int = 1, f2:  String = "2", f3: Boolean = true, f4: Option[Test])
 
 class JsonFormatAnnotationTest extends Specification {
 
@@ -66,26 +65,9 @@ class JsonFormatAnnotationTest extends Specification {
       )
 
       val result = Json.fromJson[Person](json)
+      result must beAnInstanceOf[JsError]
+      result.asInstanceOf[JsError].errors.head._1.path.head.asInstanceOf[KeyPathNode].key mustEqual "age"
 
-      result match {
-        case e: JsError =>
-          e.errors.head._1.path.head.asInstanceOf[KeyPathNode].key mustEqual("age")
-          e.errors.head._2.head.message must contain("error.expected.jsnumber")
-        case _ =>
-          result must beAnInstanceOf[JsError]
-      }
-    }
-
-    "multiple defaults must get replaced" in {
-      val json = Json.obj("f1" -> "str", "f2" -> false, "f3" -> 3, "f4" -> "not test")
-      val result = Json.fromJson[Test](json)
-      result match {
-        case JsSuccess(value, paths) =>
-          value mustEqual(Test(f4 = None))
-          paths.path.map(_.toString) must contain(allOf("/f1", "/f2", "/f3", "/f4"))
-            .setMessage("success result should contain paths of failed keys")
-        case _ => result must beAnInstanceOf[JsSuccess[Test]]
-      }
     }
   }
 }
