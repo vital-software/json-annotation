@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.6.0] - 2018-08-13
+
 - Removed robust Json parsing implementation. Moving
 this to the client package to have more control.
 
