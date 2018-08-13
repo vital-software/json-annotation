@@ -48,53 +48,31 @@ class jsonMacro(useDefaults: Boolean) {
       }
     }
 
-    /**
-     * Generates implicit json.Formats that fallback to the defaults is the initial parsing fails.
-     */
     def jsonFormatter(className: TypeName, fields: List[ValDef]) = {
       fields.length match {
         case 0 => c.abort(c.enclosingPosition, "Cannot create json formatter for case class with no fields")
         case _ =>
-          val lowPriorityFormats = if (useDefaults) {
-            q"private val lowPriorityFormats = play.api.libs.json.Json.using[play.api.libs.json.Json.WithDefaultValues].format[$className]"
+          if (useDefaults) {
+            q"implicit val jsonAnnotationFormat = play.api.libs.json.Json.using[play.api.libs.json.Json.WithDefaultValues].format[$className]"
           } else {
-            q"private val lowPriorityFormats = play.api.libs.json.Json.format[$className]"
+            q"implicit val jsonAnnotationFormat = play.api.libs.json.Json.format[$className]"
           }
-
-          Seq(
-            lowPriorityFormats,
-            q"""
-                private val robustReads = new play.api.libs.json.Reads[$className] {
-                  override def reads(json: play.api.libs.json.JsValue) = lowPriorityFormats.reads(json) match {
-                    case s: play.api.libs.json.JsSuccess[_] => s
-                    case e: play.api.libs.json.JsError =>
-                      val transforms = e.errors.map(_._1)
-                        .filter(_.path.size == 1)
-                        .map(_.json.prune)
-                        .reduce(_ andThen _)
-
-                      json.transform(transforms).flatMap(lowPriorityFormats.reads _).orElse(e)
-                  }
-                }
-              """,
-            q"implicit val jsonAnnotationFormat = play.api.libs.json.Format(robustReads, lowPriorityFormats)"
-          )
       }
     }
 
-    def modifiedCompanion(compDeclOpt: Option[ModuleDef], format: Seq[Tree], className: TypeName) = {
+    def modifiedCompanion(compDeclOpt: Option[ModuleDef], format: ValDef, className: TypeName) = {
       compDeclOpt map { compDecl =>
         // Add the formatter to the existing companion object
         val q"object $obj extends ..$bases { ..$body }" = compDecl
         q"""
           object $obj extends ..$bases {
             ..$body
-            ..$format
+            $format
           }
         """
       } getOrElse {
         // Create a companion object with the formatter
-        q"object ${className.toTermName} { ..$format }"
+        q"object ${className.toTermName} { $format }"
       }
     }
 
