@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Removed robust Json parsing implementation. Moving
+this to the client package to have more control.
+
 ## [0.5.0] - 2018-08-09
 
 ### Breaking changes
