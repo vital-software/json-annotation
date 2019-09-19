@@ -10,9 +10,9 @@ organization := "com.github.vital-software"
 
 name := "json-annotation"
 
-scalaVersion := "2.11.12"
+scalaVersion := "2.12.8"
 
-crossScalaVersions := Seq("2.11.12", "2.12.6")
+crossScalaVersions := Seq("2.11.12", "2.12.8")
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),
@@ -22,11 +22,11 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
   "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-  "com.typesafe.play" %% "play-json" % "2.6.8" % Test,
+  "com.typesafe.play" %% "play-json" % "2.7.3" % Test,
   "org.specs2" %% "specs2-core" % "3.9.5" % Test
 )
 
-addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full)
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
 
 scalacOptions in ThisBuild ++= Seq("-unchecked", "-deprecation")
 
