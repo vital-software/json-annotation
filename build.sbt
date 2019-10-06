@@ -10,25 +10,25 @@ organization := "com.github.vital-software"
 
 name := "json-annotation"
 
-scalaVersion := "2.12.8"
+scalaVersion := "2.13.1"
 
-crossScalaVersions := Seq("2.11.12", "2.12.8")
+crossScalaVersions := Seq("2.11.12", "2.12.8", "2.13.1")
 
 resolvers ++= Seq(
-  Resolver.sonatypeRepo("releases"),
-  Resolver.sonatypeRepo("snapshots"),
-  "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/"
+  Resolver.sonatypeRepo("snapshots")
 )
 
 libraryDependencies ++= Seq(
-  "org.scala-lang" % "scala-reflect" % scalaVersion.value,
-  "com.typesafe.play" %% "play-json" % "2.7.3" % Test,
-  "org.specs2" %% "specs2-core" % "3.9.5" % Test
+  "org.scala-lang"    %  "scala-reflect" % scalaVersion.value,
+  "com.typesafe.play" %% "play-json"     % "2.7.4" % Test,
+  "org.specs2"        %% "specs2-core"   % "4.7.1" % Test
 )
 
-addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full)
-
-scalacOptions in ThisBuild ++= Seq("-unchecked", "-deprecation")
+scalacOptions in ThisBuild ++= Seq(
+  "-unchecked", 
+  "-deprecation", 
+  "-Ymacro-annotations"
+)
 
 publishMavenStyle := true
 
@@ -70,6 +70,11 @@ pomExtra := (
       <name>Aaron Patzer</name>
       <url>https://github.com/apatzer</url>
     </developer>
+    <developer>
+      <id>mslinn</id>
+      <name>Mike Slinn</name>
+      <url>https://github.com/mslinn</url>
+    </developer>
   </developers>)
 
 // PGP settings
@@ -77,9 +82,9 @@ pgpPassphrase := Some(Array())
 usePgpKeyHex("1bfe664d074b29f8")
 
 // Release settings
-releaseTagName              := s"${if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value}" // Remove v prefix
-releaseTagComment           := s"Releasing ${(version in ThisBuild).value}\n\n[skip ci]"
-releaseCommitMessage        := s"Setting version to ${(version in ThisBuild).value}\n\n[skip ci]"
+releaseTagName              := s"${ if (releaseUseGlobalVersion.value) (version in ThisBuild).value else version.value }" // Remove v prefix
+releaseTagComment           := s"Releasing ${ (version in ThisBuild).value }\n\n[skip ci]"
+releaseCommitMessage        := s"Setting version to ${ (version in ThisBuild).value }\n\n[skip ci]"
 
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
@@ -126,7 +131,7 @@ def updateLine(state: State, fileName: String, marker: String, replacement: Stri
   }
 
   val (version: String, _) = state.get(ReleaseKeys.versions).getOrElse {
-    sys.error(s"${ReleaseKeys.versions.label} key not set")
+    sys.error(s"${ ReleaseKeys.versions.label } key not set")
   }
 
   val fileToModify = Project.extract(state).get(baseDirectory.in(ThisBuild)) / fileName
@@ -134,7 +139,7 @@ def updateLine(state: State, fileName: String, marker: String, replacement: Stri
   val lineNumber = lines.indexWhere(_.contains(marker))
 
   if (lineNumber == -1) {
-    throw new RuntimeException(s"Could not find marker '$marker' in file '${fileToModify.getPath}'")
+    throw new RuntimeException(s"Could not find marker '$marker' in file '${ fileToModify.getPath }'")
   }
 
   val content = lines.updated(lineNumber, replacement(version)).mkString("\n") + "\n"
