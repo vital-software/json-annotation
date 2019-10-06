@@ -24,10 +24,23 @@ libraryDependencies ++= Seq(
   "org.specs2"        %% "specs2-core"   % "4.7.1" % Test
 )
 
+Compile / scalacOptions ++= {
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, n)) if n >= 13 => "-Ymacro-annotations" :: Nil
+    case _ => Nil
+  }
+}
+
+libraryDependencies ++= {
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, n)) if n >= 13 => Nil
+    case _ => compilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full) :: Nil
+  }
+}
+
 scalacOptions in ThisBuild ++= Seq(
-  "-unchecked", 
-  "-deprecation", 
-  "-Ymacro-annotations"
+  "-unchecked",
+  "-deprecation"
 )
 
 publishMavenStyle := true
