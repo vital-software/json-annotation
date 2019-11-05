@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.6.2] - 2019-11-05
+
 ### Added
 
 - Added support for Scala 2.13 (@mslinn)
@@ -29,7 +31,8 @@
 - Version moved to version.sbt
 
 
-[Unreleased]: https://github.com/vital-software/json-annotation/compare/0.6.0...HEAD
+[Unreleased]: https://github.com/vital-software/json-annotation/compare/0.6.2...HEAD
+[0.6.2]: https://github.com/vital-software/json-annotation/compare/0.6.0...0.6.2
 [0.6.0]: https://github.com/vital-software/json-annotation/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/vital-software/json-annotation/compare/0.4.5...0.5.0
 [0.4.5]: https://github.com/vital-software/json-annotation/releases/tag/0.4.5
