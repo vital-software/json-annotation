@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Allow annotating final case classes
+
 ## [0.6.2] - 2019-11-05
 
 ### Added
