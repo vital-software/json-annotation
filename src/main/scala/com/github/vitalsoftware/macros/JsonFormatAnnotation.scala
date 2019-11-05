@@ -16,21 +16,21 @@ object jsonMacroInstance extends jsonMacro(false)
 object jsonDefaultsMacroInstance extends jsonMacro(true)
 
 /**
-  * "@json" macro annotation for case classes
-  *
-  * This macro annotation automatically creates a JSON serializer for the annotated case class.
-  * The companion object will be automatically created if it does not already exist.
-  */
+ * "@json" macro annotation for case classes
+ *
+ * This macro annotation automatically creates a JSON serializer for the annotated case class.
+ * The companion object will be automatically created if it does not already exist.
+ */
 class json extends StaticAnnotation {
   def macroTransform(annottees: Any*): Any = macro jsonMacroInstance.impl
 }
 
 /**
-  * "@jsonDefaults" macro annotation for case classes
-  *
-  * Same as "@json" annotation, except that it uses Json.using[Json.WithDefaultValues] to allow default values
-  * to be used for non-optional fields if they are not present during Reads[T].
-  */
+ * "@jsonDefaults" macro annotation for case classes
+ *
+ * Same as "@json" annotation, except that it uses Json.using[Json.WithDefaultValues] to allow default values
+ * to be used for non-optional fields if they are not present during Reads[T].
+ */
 class jsonDefaults extends StaticAnnotation {
   def macroTransform(annottees: Any*): Any = macro jsonDefaultsMacroInstance.impl
 }
@@ -39,16 +39,15 @@ class jsonMacro(useDefaults: Boolean) {
   def impl(c: CrossVersionContext)(annottees: c.Expr[Any]*): c.Expr[Any] = {
     import c.universe._
 
-    def extractClassNameAndFields(classDecl: ClassDef) = {
+    def extractClassNameAndFields(classDecl: ClassDef) =
       try {
         val q"case class $className(..$fields) extends ..$bases { ..$body }" = classDecl
         (className, fields)
       } catch {
         case _: MatchError => c.abort(c.enclosingPosition, "Annotation is only supported on case class")
       }
-    }
 
-    def jsonFormatter(className: TypeName, fields: List[ValDef]) = {
+    def jsonFormatter(className: TypeName, fields: List[ValDef]) =
       fields.length match {
         case 0 => c.abort(c.enclosingPosition, "Cannot create json formatter for case class with no fields")
         case _ =>
@@ -58,9 +57,8 @@ class jsonMacro(useDefaults: Boolean) {
             q"implicit val jsonAnnotationFormat = play.api.libs.json.Json.format[$className]"
           }
       }
-    }
 
-    def modifiedCompanion(compDeclOpt: Option[ModuleDef], format: ValDef, className: TypeName) = {
+    def modifiedCompanion(compDeclOpt: Option[ModuleDef], format: ValDef, className: TypeName) =
       compDeclOpt map { compDecl =>
         // Add the formatter to the existing companion object
         val q"object $obj extends ..$bases { ..$body }" = compDecl
@@ -74,7 +72,6 @@ class jsonMacro(useDefaults: Boolean) {
         // Create a companion object with the formatter
         q"object ${className.toTermName} { $format }"
       }
-    }
 
     def modifiedDeclaration(classDecl: ClassDef, compDeclOpt: Option[ModuleDef] = None) = {
       val (className, fields) = extractClassNameAndFields(classDecl)
@@ -89,9 +86,9 @@ class jsonMacro(useDefaults: Boolean) {
     }
 
     annottees.map(_.tree) match {
-      case (classDecl: ClassDef) :: Nil => modifiedDeclaration(classDecl)
+      case (classDecl: ClassDef) :: Nil                          => modifiedDeclaration(classDecl)
       case (classDecl: ClassDef) :: (compDecl: ModuleDef) :: Nil => modifiedDeclaration(classDecl, Some(compDecl))
-      case _ => c.abort(c.enclosingPosition, "Invalid annottee")
+      case _                                                     => c.abort(c.enclosingPosition, "Invalid annottee")
     }
   }
 }

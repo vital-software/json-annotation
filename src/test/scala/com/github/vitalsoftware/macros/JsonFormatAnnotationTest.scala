@@ -7,11 +7,8 @@ import play.api.libs.json._
 @jsonDefaults case class Person2(name: String, age: Int = 7)
 
 class JsonFormatAnnotationTest extends Specification {
-
   "@json annotation" should {
-
     "create correct formatter for case class with >= 2 fields" in {
-
       val person = Person("Victor Hugo", 46)
       val json = Json.toJson(person)
       json === Json.obj(
@@ -23,9 +20,7 @@ class JsonFormatAnnotationTest extends Specification {
   }
 
   "@jsonDefaults annotation" should {
-
     "create correct formatter for case class with >= 2 fields" in {
-
       val person = Person2("Victor Hugo")
       val json = Json.toJson(person)
       json === Json.obj(
