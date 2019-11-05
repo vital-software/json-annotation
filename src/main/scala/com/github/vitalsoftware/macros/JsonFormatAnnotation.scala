@@ -44,7 +44,14 @@ class jsonMacro(useDefaults: Boolean) {
         val q"case class $className(..$fields) extends ..$bases { ..$body }" = classDecl
         (className, fields)
       } catch {
-        case _: MatchError => c.abort(c.enclosingPosition, "Annotation is only supported on case class")
+        case _: MatchError =>
+          try {
+            val q"final case class $className(..$fields) extends ..$bases { ..$body }" = classDecl
+            (className, fields)
+          } catch {
+            case _: MatchError =>
+              c.abort(c.enclosingPosition, "Annotation is only supported on case class")
+          }
       }
 
     def jsonFormatter(className: TypeName, fields: List[ValDef]) =
