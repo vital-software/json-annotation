@@ -7,17 +7,18 @@ publishTo := {
   if (isSnapshot.value)
     Some("snapshots" at nexus + "content/repositories/snapshots")
   else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+    Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 
 publishArtifact in Test := false
 
-pomIncludeRepository := { _ => false }
+pomIncludeRepository := { _ =>
+  false
+}
 
 sonatypeProfileName := "com.github.vital-software"
 
-pomExtra := (
-  <url>https://github.com/vital-software/json-annotation</url>
+pomExtra := (<url>https://github.com/vital-software/json-annotation</url>
   <licenses>
     <license>
       <name>MIT</name>
@@ -47,15 +48,14 @@ pomExtra := (
     </developer>
   </developers>)
 
-
 // PGP settings
 pgpPassphrase := Some(Array())
 usePgpKeyHex("1bfe664d074b29f8")
 
 // Release settings
-releaseTagName              := s"${if (releaseUseGlobalVersion.value) (ThisBuild / version).value else version.value}" // Remove v0.x prefix
-releaseTagComment           := s"Releasing ${(ThisBuild / version).value}\n\n[skip ci]"
-releaseCommitMessage        := s"Setting version to ${(ThisBuild / version).value}\n\n[skip ci]"
+releaseTagName := s"${if (releaseUseGlobalVersion.value) (ThisBuild / version).value else version.value}" // Remove v0.x prefix
+releaseTagComment := s"Releasing ${(ThisBuild / version).value}\n\n[skip ci]"
+releaseCommitMessage := s"Setting version to ${(ThisBuild / version).value}\n\n[skip ci]"
 
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
@@ -89,9 +89,10 @@ updateLinesSchema := Seq(
   UpdateLine(
     file("CHANGELOG.md"),
     unreleasedCompare.unapplySeq(_).isDefined,
-    (v, compareLine) => compareLine match {
-      case unreleasedCompare(project, previous) =>
-        s"[Unreleased]: https://github.com/$project/compare/$v...HEAD\n[$v]: https://github.com/$project/compare/$previous...$v"
-    }
+    (v, compareLine) =>
+      compareLine match {
+        case unreleasedCompare(project, previous) =>
+          s"[Unreleased]: https://github.com/$project/compare/$v...HEAD\n[$v]: https://github.com/$project/compare/$previous...$v"
+      }
   ),
 )
