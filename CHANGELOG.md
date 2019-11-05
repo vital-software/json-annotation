@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [0.6.3] - 2019-11-05
+
 ### Fixed
 
 - Allow annotating final case classes
@@ -35,7 +37,8 @@
 - Version moved to version.sbt
 
 
-[Unreleased]: https://github.com/vital-software/json-annotation/compare/0.6.2...HEAD
+[Unreleased]: https://github.com/vital-software/json-annotation/compare/0.6.3...HEAD
+[0.6.3]: https://github.com/vital-software/json-annotation/compare/0.6.2...0.6.3
 [0.6.2]: https://github.com/vital-software/json-annotation/compare/0.6.0...0.6.2
 [0.6.0]: https://github.com/vital-software/json-annotation/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/vital-software/json-annotation/compare/0.4.5...0.5.0
