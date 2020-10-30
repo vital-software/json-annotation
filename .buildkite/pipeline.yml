@@ -3,11 +3,6 @@ steps:
     command:
       - docker build --tag json-annotation:${BUILDKITE_COMMIT} -f .buildkite/Dockerfile .
       - docker run json-annotation:${BUILDKITE_COMMIT} sbt test
-    plugins:
-      - seek-oss/aws-sm#v2.2.1:
-          json-to-env:
-            - secret-id: "global/sonatype-credentials"
-              json-key: ".Variables"
 
   - wait
 
